@@ -50,13 +50,19 @@ registerBtn.addEventListener("click", () => {
   });
 });
 
-const handleLoginAndJump = (status: number, msg: string, userName: string) => {
-  if (status !== 1) {
+const handleLoginAndJump = (status: number, userName: string, msg?: string) => {
+  if (status !== 1 && msg) {
     loginStatus.textContent = msg;
   } else {
     loginAndRegisterCard.style.display = "none";
     welcomeMessages.style.display = "block";
     welcomeMessages.textContent = `欢迎你，${userName}`;
-    alert(msg);
+    msg && alert(msg);
   }
 };
+
+window.addEventListener("load", () => {
+  axios.post(`${BASE_URL}/keepLogin`, {}).then((res) => {
+    handleLoginAndJump(res.data.status, res.data.userName);
+  });
+});

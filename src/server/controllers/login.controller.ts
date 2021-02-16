@@ -26,6 +26,7 @@ router.post("/", async (req, res) => {
             msg = "登陆成功";
             status = 1;
             currentUser = user.userName;
+            res.cookie("user", user.userName, { httpOnly: true });
           } else {
             msg = "密码错误";
           }
