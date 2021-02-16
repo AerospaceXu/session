@@ -4,13 +4,12 @@ import { readDB } from "../utils/read-db";
 
 const router = express.Router();
 
-router.post("/api/v1/login", async (req, res) => {
-  const { userName, userPassword } = req.body.userName;
-  console.log("接收到啦", req);
+router.post("/", async (req, res) => {
+  const { userName, userPassword } = req.body;
 
   if (typeof userName !== "string" || typeof userPassword !== "string") {
     res.statusCode = 403;
-    return res.json({});
+    return res.json({ msg: "数据错误" });
   }
 
   try {
@@ -36,3 +35,5 @@ router.post("/api/v1/login", async (req, res) => {
     return res.json({ msg: err });
   }
 });
+
+export default router;
