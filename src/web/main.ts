@@ -39,20 +39,20 @@ const register = async (userName: string, userPassword: string) => {
 loginBtn.addEventListener("click", () => {
   login(userNameInput.value, userPasswordInput.value).then((res) => {
     const { msg, status, currentUser } = res.data;
-    handleLoginAndJump(status, msg, currentUser);
+    handleLoginAndJump(status, currentUser, msg);
   });
 });
 
 registerBtn.addEventListener("click", () => {
   register(userNameInput.value, userPasswordInput.value).then((res) => {
     const { msg, status, currentUser } = res.data;
-    handleLoginAndJump(status, msg, currentUser);
+    handleLoginAndJump(status, currentUser, msg);
   });
 });
 
 const handleLoginAndJump = (status: number, userName: string, msg?: string) => {
-  if (status !== 1 && msg) {
-    loginStatus.textContent = msg;
+  if (status !== 1) {
+    loginStatus.textContent = msg ?? "";
   } else {
     loginAndRegisterCard.style.display = "none";
     welcomeMessages.style.display = "block";

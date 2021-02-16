@@ -1,6 +1,7 @@
 import * as express from "express";
 
 import { readDB } from "../utils/read-db";
+import { writeDB } from "../utils/write-db";
 
 const router = express.Router();
 
@@ -16,7 +17,7 @@ router.post("/", async (req, res) => {
   } else {
     try {
       const database = await readDB();
-      const { users } = JSON.parse(database);
+      const { users, sessions } = JSON.parse(database);
       if (Array.isArray(users)) {
         const user = users.find((user) => user.userName === userName);
         if (!user) {
@@ -26,7 +27,11 @@ router.post("/", async (req, res) => {
             msg = "登陆成功";
             status = 1;
             currentUser = user.userName;
-            res.cookie("user", user.userName, { httpOnly: true });
+            const sessionId = Math.round(Math.random() ** 2 * 10000).toString();
+            sessions[sessionId] = user.userName;
+            const newDatabase = { ...JSON.parse(database), sessions };
+            writeDB(JSON.stringify(newDatabase));
+            res.cookie("session_id", sessionId, { httpOnly: true });
           } else {
             msg = "密码错误";
           }

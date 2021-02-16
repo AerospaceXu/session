@@ -1,4 +1,1 @@
-{
-  "users": [{"userName":"Jack","userPassword"
-  :"12345"}]
-}
+{"users":[{"userName":"Jack","userPassword":"12345"}],"sessions":{}}
