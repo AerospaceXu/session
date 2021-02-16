@@ -4,8 +4,8 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "build": "sh ./scripts/build-web.sh && sh ./scripts/build-server.sh && node ./build/main.js",
-    "dev": "./node_modules/.bin/nodemon --watch 'src/**/*' -e ts,html,css --exec 'yarn' build"
+    "build": "sh ./scripts/build.sh",
+    "dev": "./node_modules/.bin/nodemon --watch 'src/**/*' -e ts,html,css --exec 'sh' ./scripts/build-and-start.sh"
   },
   "dependencies": {
     "axios": "^0.21.1",
