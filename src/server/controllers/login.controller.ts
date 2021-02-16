@@ -1,27 +1,12 @@
 import * as express from "express";
-import * as bodyParser from "body-parser";
 
-import { readDB } from "./utils/read-db";
-
-const app = express();
-const PORT = 3000;
+import { readDB } from "../utils/read-db";
 
 const router = express.Router();
 
-app.use(express.static(`${__dirname}/static/`));
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
-
-router.get("/", async (_, res) => {
-  res.sendFile(`${__dirname}/static/index.html`);
-});
-
-app.listen(PORT, () => {
-  console.log(`已搭建服务，请访问: http://localhost:${PORT}`);
-});
-
-app.post("/api/v1/login", async (req, res) => {
-  const { userName, userPassword } = req.body;
+router.post("/api/v1/login", async (req, res) => {
+  const { userName, userPassword } = req.body.userName;
+  console.log("接收到啦", req);
 
   if (typeof userName !== "string" || typeof userPassword !== "string") {
     res.statusCode = 403;
