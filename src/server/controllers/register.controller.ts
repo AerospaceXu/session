@@ -8,33 +8,39 @@ const router = express.Router();
 router.post("/", async (req, res) => {
   const { userName, userPassword } = req.body;
 
-  if (typeof userName !== "string" || typeof userPassword !== "string") {
-    return res.json({ msg: "数据错误" });
-  }
+  let msg = "";
+  let status = -1;
+  let currentUser = "";
 
-  try {
-    const database = await readDB();
-    const { users } = JSON.parse(database);
-    if (Array.isArray(users)) {
-      const currentUser = users.find((user) => user.userName === userName);
-      if (currentUser) {
-        return res.json({ msg: "用户已存在" });
+  if (typeof userName !== "string" || typeof userPassword !== "string") {
+    msg = "数据错误";
+  } else {
+    try {
+      const database = await readDB();
+      const { users } = JSON.parse(database);
+      if (Array.isArray(users)) {
+        const user = users.find((user) => user.userName === userName);
+        if (user) {
+          msg = "用户已存在";
+        } else {
+          const newUsers = {
+            ...JSON.parse(database),
+            users: [...users, { userName, userPassword }],
+          };
+          try {
+            await writeDB(JSON.stringify(newUsers));
+            msg = "注册成功";
+            status = 1;
+            currentUser = userName;
+          } catch (e) {
+            console.log(e);
+          }
+        }
       }
-      const newUsers = {
-        ...JSON.parse(database),
-        users: [...users, { userName, userPassword }],
-      };
-      try {
-        await writeDB(JSON.stringify(newUsers));
-        return res.json({ msg: "注册成功" });
-      } catch (e) {
-        console.log(e);
-        return res.json({ msg: e });
-      }
+    } catch (err) {
+      console.log(err);
     }
-  } catch (err) {
-    console.log(err);
-    return res.json({ msg: err });
+    return res.json({ msg, status, currentUser });
   }
 });
 

@@ -7,28 +7,36 @@ const router = express.Router();
 router.post("/", async (req, res) => {
   const { userName, userPassword } = req.body;
 
+  let msg = "";
+  let status = -1;
+  let currentUser = "";
+
   if (typeof userName !== "string" || typeof userPassword !== "string") {
-    return res.json({ msg: "数据错误" });
+    msg = "数据错误";
+  } else {
+    try {
+      const database = await readDB();
+      const { users } = JSON.parse(database);
+      if (Array.isArray(users)) {
+        const user = users.find((user) => user.userName === userName);
+        if (!user) {
+          msg = "用户不存在";
+        } else {
+          if (user.userPassword === userPassword) {
+            msg = "登陆成功";
+            status = 1;
+            currentUser = user.userName;
+          } else {
+            msg = "密码错误";
+          }
+        }
+      }
+    } catch (err) {
+      console.log(err);
+    }
   }
 
-  try {
-    const database = await readDB();
-    const { users } = JSON.parse(database);
-    if (Array.isArray(users)) {
-      const currentUser = users.find((user) => user.userName === userName);
-      if (!currentUser) {
-        return res.json({ msg: "用户不存在" });
-      }
-      if (currentUser.userPassword === userPassword) {
-        return res.json({ msg: "登陆成功" });
-      } else {
-        return res.json({ msg: "密码错误" });
-      }
-    }
-  } catch (err) {
-    console.log(err);
-    return res.json({ msg: err });
-  }
+  return res.json({ msg, status, currentUser });
 });
 
 export default router;
