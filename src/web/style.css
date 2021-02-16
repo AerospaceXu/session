@@ -1,0 +1,58 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-size: 14px;
+  color: rgba(0, 0, 0, 0.87);
+  font-family: -apple-system, "Noto Sans", "Helvetica Neue", Helvetica,
+    "Nimbus Sans L", Arial, "Liberation Sans", "PingFang SC", "Hiragino Sans GB",
+    "Noto Sans CJK SC", "Source Han Sans SC", "Source Han Sans CN",
+    "Microsoft YaHei", "Wenquanyi Micro Hei", "WenQuanYi Zen Hei", "ST Heiti",
+    SimHei, "WenQuanYi Zen Hei Sharp", sans-serif;
+}
+
+#app {
+  padding: 24px 56px;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.login-register {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.login-register > label {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  margin: 16px;
+}
+
+input.user-name-input,
+input.user-password-input {
+  margin-right: 16px;
+  width: 200px;
+  padding: 4px 8px;
+  margin: 8px 0;
+}
+
+.buttons {
+  margin-top: 12px;
+  display: flex;
+  justify-content: center;
+  align-self: center;
+}
+
+.buttons > button {
+  margin: 12px;
+  padding: 4px;
+  cursor: pointer;
+}

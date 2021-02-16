@@ -1,39 +1,44 @@
 import axios from "axios";
 
-const loginBtn = document.querySelector("#login-btn");
-const loginUserNameInput = document.querySelector(
-  ".login .user-name-input"
+const loginBtn = document.querySelector("#login-btn") as HTMLButtonElement;
+const registerBtn = document.querySelector(
+  "#register-btn"
+) as HTMLButtonElement;
+
+const userNameInput = document.querySelector(
+  ".user-name-input"
 ) as HTMLInputElement;
-const loginUserPasswordInput = document.querySelector(
-  ".login .user-password-input"
+const userPasswordInput = document.querySelector(
+  ".user-password-input"
 ) as HTMLInputElement;
 
-const registerBtn = document.querySelector("#register-btn");
-const registerUserNameInput = document.querySelector(
-  ".register .user-name-input"
-) as HTMLInputElement;
-const registerUserPasswordInput = document.querySelector(
-  ".register .user-password-input"
-) as HTMLInputElement;
-
-const login = (userName: string, userPassword: string) => {
-  axios.post("http://localhost:3000/api/v1/login", {
+const login = async (userName: string, userPassword: string) => {
+  return await axios.post("http://localhost:3000/api/v1/login", {
     userName,
     userPassword,
   });
 };
 
-const register = (userName: string, userPassword: string) => {
-  axios.post("http://localhost:3000/api/v1/register", {
+const register = async (userName: string, userPassword: string) => {
+  return await axios.post("http://localhost:3000/api/v1/register", {
     userName,
     userPassword,
   });
 };
 
-loginBtn?.addEventListener("click", () => {
-  login(loginUserNameInput.value, loginUserPasswordInput.value);
+loginBtn.addEventListener("click", () => {
+  login(userNameInput.value, userPasswordInput.value).then(
+    (res) => {
+      alert(res.data.msg);
+    },
+    (err) => {
+      console.log(err);
+    }
+  );
 });
 
-registerBtn?.addEventListener("click", () => {
-  register(registerUserNameInput.value, registerUserPasswordInput.value);
+registerBtn.addEventListener("click", () => {
+  register(userNameInput.value, userPasswordInput.value).then((res) => {
+    alert(res.data.msg);
+  });
 });
